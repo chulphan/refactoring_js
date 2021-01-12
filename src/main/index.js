@@ -40,19 +40,18 @@ function statement(invoice, plays) {
     {style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
   for (let perf of invoice.performances) {
-    // play 는 개별공연에서 얻기 때문에 함수의 인자로 전달할 필요가 없다 (임시변수를 질의함수로 바꾸기)
-    const play = playFor(perf);
-    const thisAmount = amountFor(perf, play); // 추출한 함수를 이용
+    // 변수 인라인을 적용한다
+    const thisAmount = amountFor(perf, playFor(perf)); // 추출한 함수를 이용
 
     // 포인트를 적립한다
     volumeCredits += Math.max(perf.audience - 30, 0);
     // 희극 관객 5명마다 추가 포인트를 제공한다
-    if ('comedy' === play.type) {
+    if ('comedy' === playFor(perf).type) {
       volumeCredits += Math.floor(perf.audience / 5);
     }
 
     // 청구 내역을 출력한다
-    result += `    ${play.name}: ${format(thisAmount / 100)} (${perf.audience}석)\n`;
+    result += `    ${playFor(perf).name}: ${format(thisAmount / 100)} (${perf.audience}석)\n`;
     totalAmount += thisAmount;
   }
 
