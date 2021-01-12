@@ -9,6 +9,7 @@ function statement(invoice, plays) {
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
     result.play = playFor(result); // 중간 데이터에 연극 정보를 저장한다
     result.amount = amountFor(result);
+    result.volumeCredits = volumeCreditsFor(result);
     return result;
   }
 
@@ -36,6 +37,18 @@ function statement(invoice, plays) {
         break;
       default:
         throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`); // play를 playFor() 호출로 변경
+    }
+
+    return result;
+  }
+
+  // 간단히 perf 를 전달하는 것으로 포인트 계산이 가능해진다
+  function volumeCreditsFor(aPerformance) {
+    let result = 0;
+    result += Math.max(aPerformance.audience - 30, 0);
+
+    if ('comedy' === playFor(aPerformance).type) {
+      result += Math.floor(aPerformance.audience / 5);
     }
 
     return result;
@@ -108,7 +121,7 @@ function renderPlainText(data, plays) {
   function totalVolumeCredits() {
     let result = 0;
     for (let perf of data.performances) {
-      result += volumeCreditsFor(perf);
+      result += perf.volumeCredits;
     }
     return result;
   }
