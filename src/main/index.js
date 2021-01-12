@@ -15,9 +15,8 @@ function usd(aNumber) {
     {style: "currency", currency: "USD", minimumFractionDigits: 2}).format(aNumber / 100);
 }
 
-// totalAmount 이름을 쓰면 좋은데 이미 변수가 있어 사용할 수 없다
-// 일단 가칭으로 이름을 정해준다
-function appleSauce() {
+// 이제 변수명 충돌이 없어졌으므로 함수 이름을 totalAmount로 변경한다
+function totalAmount() {
   let totalAmount = 0;
   for (let perf of invoice[0].performances) {
     totalAmount += amountFor(perf);
@@ -84,14 +83,8 @@ function statement(invoice, plays) {
     result += `    ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
   }
 
-  let totalAmount = appleSauce(); // 함수 추출 & 임시 이름 부여
-  // 반복문 쪼개기로 volumeCredits 값이 누적되는 부분을 따로 빼낸다
-  // 문장 슬라이드하기를 적용해서 volumeCredits 변수 선언하는 문장을 반복문 앞으로 옮긴다
-  // volumeCredits 값 갱신과 관련한 문장들을 모아두면 '임시 변수를 질의 함수로 바꾸기' 가 수월해짐
-  // 먼저 volumeCredits 값 계산 코드를 함수로 추출하는 작업을 한다
-
   // 임시 변수였던 format 을 함수 호출로 대체했다
-  result += `총액: ${usd(totalAmount)}\n`;
+  result += `총액: ${usd(totalAmount())}\n`; // 변수 인라인 후 함수 이름을 바꾼
   result += `적립 포인트: ${totalVolumeCredits()}점\n`; // volumeCredits 변수를 인라인 시켰다
 
   return result;
