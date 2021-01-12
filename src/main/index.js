@@ -9,7 +9,7 @@ function playFor(aPerformance) {
 function amountFor(aPerformance, play) { // aPerformance, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
   let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
 
-  switch (play.type) {
+  switch (playFor(aPerformance).type) { // play를 playFor() 호출로 변경
     case "tragedy": //비극
       result = 40000;
       if (aPerformance.audience > 30) {
@@ -24,7 +24,7 @@ function amountFor(aPerformance, play) { // aPerformance, play 는 함수 안에
       result += 300 * aPerformance.audience;
       break;
     default:
-      throw new Error(`알 수 없는 장르: ${play.type}`);
+      throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`); // play를 playFor() 호출로 변경
   }
 
   return result;
