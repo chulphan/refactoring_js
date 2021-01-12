@@ -1,6 +1,18 @@
 const invoice = require('../data/invoices.json');
 const plays = require('../data/plays.json');
 
+// 간단히 perf 를 전달하는 것으로 포인트 계산이 가능해진다
+function volumeCreditsFor(perf) {
+  let volumeCredits = 0;
+  volumeCredits += Math.max(perf.audience - 30, 0);
+
+  if ('comedy' === playFor(perf).type) {
+    volumeCredits += Math.floor(perf.audience / 5);
+  }
+
+  return volumeCredits;
+}
+
 function playFor(aPerformance) {
   return plays[aPerformance.playID];
 }
@@ -40,12 +52,7 @@ function statement(invoice, plays) {
     {style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
   for (let perf of invoice.performances) {
-    // 포인트를 적립한다
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    // 희극 관객 5명마다 추가 포인트를 제공한다
-    if ('comedy' === playFor(perf).type) {
-      volumeCredits += Math.floor(perf.audience / 5);
-    }
+    volumeCredits += volumeCreditsFor(perf); // 추출한 함수를 이용해 값을 누적
 
     // 청구 내역을 출력한다
     //                                        amountFor(perf) 를 사용하여 thisAmount 변수를 인라인한다
