@@ -6,7 +6,7 @@ function playFor(aPerformance) {
 }
 
 // perf 매개변수명을 의미가 드러나도록 변경했다
-function amountFor(aPerformance, play) { // aPerformance, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
+function amountFor(aPerformance) { // aPerformance, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
   let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
 
   switch (playFor(aPerformance).type) { // play를 playFor() 호출로 변경
@@ -41,7 +41,7 @@ function statement(invoice, plays) {
 
   for (let perf of invoice.performances) {
     // 변수 인라인을 적용한다
-    const thisAmount = amountFor(perf, playFor(perf)); // 추출한 함수를 이용
+    const thisAmount = amountFor(perf); // 추출한 함수를 이용
 
     // 포인트를 적립한다
     volumeCredits += Math.max(perf.audience - 30, 0);
