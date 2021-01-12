@@ -40,9 +40,6 @@ function statement(invoice, plays) {
     {style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
   for (let perf of invoice.performances) {
-    // 변수 인라인을 적용한다
-    const thisAmount = amountFor(perf); // 추출한 함수를 이용
-
     // 포인트를 적립한다
     volumeCredits += Math.max(perf.audience - 30, 0);
     // 희극 관객 5명마다 추가 포인트를 제공한다
@@ -51,8 +48,9 @@ function statement(invoice, plays) {
     }
 
     // 청구 내역을 출력한다
-    result += `    ${playFor(perf).name}: ${format(thisAmount / 100)} (${perf.audience}석)\n`;
-    totalAmount += thisAmount;
+    //                                        amountFor(perf) 를 사용하여 thisAmount 변수를 인라인한다
+    result += `    ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience}석)\n`;
+    totalAmount += amountFor(perf); // thisAmount 변수를 인라인한다
   }
 
   result += `총액: ${format(totalAmount / 100)}\n`;
