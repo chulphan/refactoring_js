@@ -5,7 +5,8 @@ function statement(invoice, plays) {
   return renderPlainText(statementData, plays);
 
   function enrichPerformance(aPerformance) {
-    const result = Object.assign({}, aPerformance);
+    // 얕은 복사를 수행한 이유는 함수로 건넨 데이터를 수정하지 않기 위해서임(immutable)
+    const result = Object.assign({}, aPerformance); // 얕은 복사 수행
     return result;
   }
 }
