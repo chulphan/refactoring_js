@@ -2,6 +2,8 @@ function statement(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer; // 고객 데이터를 중간 데이터로 옮겼다
   statementData.performances = invoice.performances.map(enrichPerformance);
+  statementData.totalAmount = totalAmount(statementData);
+  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
   return renderPlainText(statementData, plays);
 
   function enrichPerformance(aPerformance) {
@@ -10,6 +12,7 @@ function statement(invoice, plays) {
     result.play = playFor(result); // 중간 데이터에 연극 정보를 저장한다
     result.amount = amountFor(result);
     result.volumeCredits = volumeCreditsFor(result);
+
     return result;
   }
 
@@ -53,6 +56,23 @@ function statement(invoice, plays) {
 
     return result;
   }
+
+  // 이제 변수명 충돌이 없어졌으므로 함수 이름을 totalAmount로 변경한다
+  function totalAmount(data) {
+    let result = 0;
+    for (let perf of data.performances) {
+      result += perf.amount;
+    }
+    return result;
+  }
+
+  function totalVolumeCredits(data) {
+    let result = 0;
+    for (let perf of data.performances) {
+      result += perf.volumeCredits;
+    }
+    return result;
+  }
 }
 
 function renderPlainText(data, plays) {
@@ -65,8 +85,8 @@ function renderPlainText(data, plays) {
   }
 
   // 임시 변수였던 format 을 함수 호출로 대체했다
-  result += `총액: ${usd(totalAmount())}\n`; // 변수 인라인 후 함수 이름을 바꾼
-  result += `적립 포인트: ${totalVolumeCredits()}점\n`; // volumeCredits 변수를 인라인 시켰다
+  result += `총액: ${usd(data.totalAmount)}\n`; // 변수 인라인 후 함수 이름을 바꾼
+  result += `적립 포인트: ${data.totalVolumeCredits}점\n`; // volumeCredits 변수를 인라인 시켰다
 
   return result;
 
