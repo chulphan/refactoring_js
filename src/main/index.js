@@ -1,13 +1,14 @@
 function statement(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer; // 고객 데이터를 중간 데이터로 옮겼다
-  return renderPlainText(statementData, invoice, plays);
+  statementData.performances = invoice.performances;
+  return renderPlainText(statementData, plays);
 }
 
-function renderPlainText(data, invoice, plays) {
+function renderPlainText(data, plays) {
   let result = `청구 내역 (고객명: ${data.customer})\n`; // 중간 데이터로 부터 고객 데이터를 얻었다
 
-  for (let perf of invoice.performances) {
+  for (let perf of data.performances) {
     // 청구 내역을 출력한다
     //                                        amountFor(perf) 를 사용하여 thisAmount 변수를 인라인한다
     result += `    ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
@@ -61,7 +62,7 @@ function renderPlainText(data, invoice, plays) {
 // 이제 변수명 충돌이 없어졌으므로 함수 이름을 totalAmount로 변경한다
   function totalAmount() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
@@ -69,7 +70,7 @@ function renderPlainText(data, invoice, plays) {
 
   function totalVolumeCredits() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += volumeCreditsFor(perf);
     }
     return result;
