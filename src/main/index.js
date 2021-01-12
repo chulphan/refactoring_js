@@ -17,19 +17,19 @@ function usd(aNumber) {
 
 // 이제 변수명 충돌이 없어졌으므로 함수 이름을 totalAmount로 변경한다
 function totalAmount() {
-  let totalAmount = 0;
+  let result = 0;
   for (let perf of invoice[0].performances) {
-    totalAmount += amountFor(perf);
+    result += amountFor(perf);
   }
-  return totalAmount;
+  return result;
 }
 
 function totalVolumeCredits() {
-  let volumeCredits = 0;
+  let result = 0;
   for (let perf of invoice[0].performances) {
-    volumeCredits += volumeCreditsFor(perf);
+    result += volumeCreditsFor(perf);
   }
-  return volumeCredits;
+  return result;
 }
 
 // 간단히 perf 를 전달하는 것으로 포인트 계산이 가능해진다
