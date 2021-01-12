@@ -1,6 +1,15 @@
 const invoice = require('../data/invoices.json');
 const plays = require('../data/plays.json');
 
+/**
+ * 임시 변수는 자신이 속한 루틴에만 의미가 있어서 루틴이 길고 복잡해지기 쉽다
+ * 본래 fotmat 함수는 임시 변수에 함수를 대입한 형태인데, 저자는 직접 선언해서 사용하도록 바꾼다고 한다
+ */
+function format(aNumber) {
+  return new Intl.NumberFormat("en-US",
+    {style: "currency", currency: "USD", minimumFractionDigits: 2}).format(aNumber);
+}
+
 // 간단히 perf 를 전달하는 것으로 포인트 계산이 가능해진다
 function volumeCreditsFor(aPerformance) {
   let result = 0;
@@ -48,9 +57,6 @@ function statement(invoice, plays) {
   let volumeCredits = 0;
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
-  const format = new Intl.NumberFormat("en-US",
-    {style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
-
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf); // 추출한 함수를 이용해 값을 누적
 
@@ -60,6 +66,7 @@ function statement(invoice, plays) {
     totalAmount += amountFor(perf); // thisAmount 변수를 인라인한다
   }
 
+  // 임시 변수였던 format 을 함수 호출로 대체했다
   result += `총액: ${format(totalAmount / 100)}\n`;
   result += `적립 포인트: ${volumeCredits}점\n`;
 
