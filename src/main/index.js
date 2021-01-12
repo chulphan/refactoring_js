@@ -1,3 +1,28 @@
+function amountFor(perf, play) { // pef, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
+  let thisAmount = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨
+
+  switch (play.type) {
+    case "tragedy": //비극
+      thisAmount = 40000;
+      if (perf.audience > 30) {
+        thisAmount += 1000 * (perf.audience - 30);
+      }
+      break;
+    case "comedy": //희극
+      thisAmount = 30000;
+      if (perf.audience > 20) {
+        thisAmount += 10000 + 500 * (perf.audience - 20);
+      }
+      thisAmount += 300 * perf.audience;
+      break;
+    default:
+      throw new Error(`알 수 없는 장르: ${play.type}`);
+  }
+
+  return thisAmount;
+}
+
+
 function statement(invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
@@ -8,25 +33,8 @@ function statement(invoice, plays) {
 
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = 0;
+    const thisAmount = amountFor(perf, play); // 추출한 함수를 이용
 
-    switch (play.type) {
-      case "tragedy": //비극
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
-        break;
-      case "comedy": //희극
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
-        break;
-      default:
-        throw new Error(`알 수 없는 장르: ${play.type}`);
-    }
     // 포인트를 적립한다
     volumeCredits += Math.max(perf.audience - 30, 0);
     // 희극 관객 5명마다 추가 포인트를 제공한다
