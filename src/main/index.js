@@ -2,15 +2,15 @@ const invoice = require('../data/invoices.json');
 const plays = require('../data/plays.json');
 
 // 간단히 perf 를 전달하는 것으로 포인트 계산이 가능해진다
-function volumeCreditsFor(perf) {
-  let volumeCredits = 0;
-  volumeCredits += Math.max(perf.audience - 30, 0);
+function volumeCreditsFor(aPerformance) {
+  let result = 0;
+  result += Math.max(aPerformance.audience - 30, 0);
 
-  if ('comedy' === playFor(perf).type) {
-    volumeCredits += Math.floor(perf.audience / 5);
+  if ('comedy' === playFor(aPerformance).type) {
+    result += Math.floor(aPerformance.audience / 5);
   }
 
-  return volumeCredits;
+  return result;
 }
 
 function playFor(aPerformance) {
