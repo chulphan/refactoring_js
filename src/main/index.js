@@ -15,6 +15,14 @@ function usd(aNumber) {
     {style: "currency", currency: "USD", minimumFractionDigits: 2}).format(aNumber / 100);
 }
 
+function totalVolumeCredits() {
+  let volumeCredits = 0;
+  for (let perf of invoice[0].performances) {
+    volumeCredits += volumeCreditsFor(perf);
+  }
+  return volumeCredits;
+}
+
 // 간단히 perf 를 전달하는 것으로 포인트 계산이 가능해진다
 function volumeCreditsFor(aPerformance) {
   let result = 0;
@@ -59,17 +67,19 @@ function amountFor(aPerformance) { // aPerformance, play 는 함수 안에서 �
 
 function statement(invoice, plays) {
   let totalAmount = 0;
-  let volumeCredits = 0;
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
   for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf); // 추출한 함수를 이용해 값을 누적
-
     // 청구 내역을 출력한다
     //                                        amountFor(perf) 를 사용하여 thisAmount 변수를 인라인한다
     result += `    ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
     totalAmount += amountFor(perf); // thisAmount 변수를 인라인한다
   }
+  // 반복문 쪼개기로 volumeCredits 값이 누적되는 부분을 따로 빼낸다
+  // 문장 슬라이드하기를 적용해서 volumeCredits 변수 선언하는 문장을 반복문 앞으로 옮긴다
+  // volumeCredits 값 갱신과 관련한 문장들을 모아두면 '임시 변수를 질의 함수로 바꾸기' 가 수월해짐
+  // 먼저 volumeCredits 값 계산 코드를 함수로 추출하는 작업을 한다
+  let volumeCredits = totalVolumeCredits(); // 값 계산 로직을 함수로 추출
 
   // 임시 변수였던 format 을 함수 호출로 대체했다
   result += `총액: ${usd(totalAmount)}\n`;
