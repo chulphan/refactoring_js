@@ -7,7 +7,12 @@ function statement(invoice, plays) {
   function enrichPerformance(aPerformance) {
     // 얕은 복사를 수행한 이유는 함수로 건넨 데이터를 수정하지 않기 위해서임(immutable)
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
+    result.play = playFor(result); // 중간 데이터에 연극 정보를 저장한다
     return result;
+  }
+
+  function playFor(aPerformance) { // renderPlainText() 의 중첩 함수였던 함수를 일로 옮겨왔다
+    return plays[aPerformance.playID];
   }
 }
 
@@ -17,7 +22,7 @@ function renderPlainText(data, plays) {
   for (let perf of data.performances) {
     // 청구 내역을 출력한다
     //                                        amountFor(perf) 를 사용하여 thisAmount 변수를 인라인한다
-    result += `    ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    result += `    ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
   }
 
   // 임시 변수였던 format 을 함수 호출로 대체했다
@@ -94,7 +99,7 @@ function renderPlainText(data, plays) {
     return result;
   }
 
-  function playFor(aPerformance) {
+  function playFor(aPerformance) { // renderPlainText() 의 중첩 함수였던 함수를 일로 옮겨왔다
     return plays[aPerformance.playID];
   }
 }
