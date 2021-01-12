@@ -8,11 +8,37 @@ function statement(invoice, plays) {
     // 얕은 복사를 수행한 이유는 함수로 건넨 데이터를 수정하지 않기 위해서임(immutable)
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
     result.play = playFor(result); // 중간 데이터에 연극 정보를 저장한다
+    result.amount = amountFor(result);
     return result;
   }
 
   function playFor(aPerformance) { // renderPlainText() 의 중첩 함수였던 함수를 일로 옮겨왔다
     return plays[aPerformance.playID];
+  }
+
+  // perf 매개변수명을 의미가 드러나도록 변경했다
+  function amountFor(aPerformance) { // aPerformance, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
+    let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
+
+    switch (aPerformance.play.type) { // play를 playFor() 호출로 변경
+      case "tragedy": //비극
+        result = 40000;
+        if (aPerformance.audience > 30) {
+          result += 1000 * (aPerformance.audience - 30);
+        }
+        break;
+      case "comedy": //희극
+        result = 30000;
+        if (aPerformance.audience > 20) {
+          result += 10000 + 500 * (aPerformance.audience - 20);
+        }
+        result += 300 * aPerformance.audience;
+        break;
+      default:
+        throw new Error(`알 수 없는 장르: ${playFor(aPerformance).type}`); // play를 playFor() 호출로 변경
+    }
+
+    return result;
   }
 }
 
@@ -22,7 +48,7 @@ function renderPlainText(data, plays) {
   for (let perf of data.performances) {
     // 청구 내역을 출력한다
     //                                        amountFor(perf) 를 사용하여 thisAmount 변수를 인라인한다
-    result += `    ${perf.play.name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    result += `    ${perf.play.name}: ${usd(perf.amount)} (${perf.audience}석)\n`;
   }
 
   // 임시 변수였던 format 을 함수 호출로 대체했다
@@ -74,7 +100,7 @@ function renderPlainText(data, plays) {
   function totalAmount() {
     let result = 0;
     for (let perf of data.performances) {
-      result += amountFor(perf);
+      result += perf.amount;
     }
     return result;
   }
