@@ -1,25 +1,25 @@
 function amountFor(perf, play) { // pef, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
-  let thisAmount = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨
+  let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
 
   switch (play.type) {
     case "tragedy": //비극
-      thisAmount = 40000;
+      result = 40000;
       if (perf.audience > 30) {
-        thisAmount += 1000 * (perf.audience - 30);
+        result += 1000 * (perf.audience - 30);
       }
       break;
     case "comedy": //희극
-      thisAmount = 30000;
+      result = 30000;
       if (perf.audience > 20) {
-        thisAmount += 10000 + 500 * (perf.audience - 20);
+        result += 10000 + 500 * (perf.audience - 20);
       }
-      thisAmount += 300 * perf.audience;
+      result += 300 * perf.audience;
       break;
     default:
       throw new Error(`알 수 없는 장르: ${play.type}`);
   }
 
-  return thisAmount;
+  return result;
 }
 
 
