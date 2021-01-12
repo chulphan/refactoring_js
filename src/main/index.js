@@ -1,19 +1,20 @@
-function amountFor(perf, play) { // pef, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
+// perf 매개변수명을 의미가 드러나도록 변경했다
+function amountFor(aPerformance, play) { // aPerformance, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
   let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
 
   switch (play.type) {
     case "tragedy": //비극
       result = 40000;
-      if (perf.audience > 30) {
-        result += 1000 * (perf.audience - 30);
+      if (aPerformance.audience > 30) {
+        result += 1000 * (aPerformance.audience - 30);
       }
       break;
     case "comedy": //희극
       result = 30000;
-      if (perf.audience > 20) {
-        result += 10000 + 500 * (perf.audience - 20);
+      if (aPerformance.audience > 20) {
+        result += 10000 + 500 * (aPerformance.audience - 20);
       }
-      result += 300 * perf.audience;
+      result += 300 * aPerformance.audience;
       break;
     default:
       throw new Error(`알 수 없는 장르: ${play.type}`);
