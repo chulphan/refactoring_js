@@ -1,10 +1,11 @@
 function statement(invoice, plays) {
   const statementData = {};
+  statementData.customer = invoice.customer; // 고객 데이터를 중간 데이터로 옮겼다
   return renderPlainText(statementData, invoice, plays);
 }
 
 function renderPlainText(data, invoice, plays) {
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+  let result = `청구 내역 (고객명: ${data.customer})\n`; // 중간 데이터로 부터 고객 데이터를 얻었다
 
   for (let perf of invoice.performances) {
     // 청구 내역을 출력한다
