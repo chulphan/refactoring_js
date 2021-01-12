@@ -1,3 +1,10 @@
+const invoice = require('../data/invoices.json');
+const plays = require('../data/plays.json');
+
+function playFor(aPerformance) {
+  return plays[aPerformance.playID];
+}
+
 // perf 매개변수명을 의미가 드러나도록 변경했다
 function amountFor(aPerformance, play) { // aPerformance, play 는 함수 안에서 값이 바뀌지 않으므로 매개변수로 전달
   let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
@@ -33,7 +40,8 @@ function statement(invoice, plays) {
     {style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
 
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+    // play 는 개별공연에서 얻기 때문에 함수의 인자로 전달할 필요가 없다 (임시변수를 질의함수로 바꾸기)
+    const play = playFor(perf);
     const thisAmount = amountFor(perf, play); // 추출한 함수를 이용
 
     // 포인트를 적립한다
