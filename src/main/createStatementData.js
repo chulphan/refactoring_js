@@ -27,23 +27,7 @@ class PerformanceCalculator {
   }
 
   get amount() {
-    let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
-
-    switch (this.play.type) { // play를 playFor() 호출로 변경
-      case "tragedy": //비극
-        throw 'Error occurred';
-      case "comedy": //희극
-        result = 30000;
-        if (this.performance.audience > 20) {
-          result += 10000 + 500 * (this.performance.audience - 20);
-        }
-        result += 300 * this.performance.audience;
-        break;
-      default:
-        throw new Error(`알 수 없는 장르: ${this.play.type}`); // play를 playFor() 호출로 변경
-    }
-
-    return result;
+    throw new Error('서브 클래스에서 처리하도록 설계 됨');
   }
 
   get volumeCredits() {
