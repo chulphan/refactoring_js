@@ -1,3 +1,20 @@
+/**
+ *
+ * @param aPerformance
+ * @param aPlay
+ * @returns {PerformanceCalculator}
+ *
+ * 타입 코드 대신에 서브 클래스를 변경하도록 만들어야 한다(타입 코드를 서브 클래스로 바꾸기)
+ *
+ * 이를 위해서 PerformanceCalculator의 서브 클래스들을 준비하고 createStatementData() 에서 적합한 클래스를 사용하도록 만들어야 한다
+ * 그리고 딱 맞는 서브 클래스를 사용하려면 생성자 대신 함수를 호출하도록 바꿔야 한다 (자스에서는 생성자가 서브클래스의 인스턴스를 반환할 수 없기 때문)
+ * 그래서 생성자를 팩토리 함수로 바꾸기를 적용해야 한다
+ */
+
+function createPerformanceCalculator(aPerformance, aPlay) {
+  return new PerformanceCalculator(aPerformance, aPlay);
+}
+
 class PerformanceCalculator {
   constructor(aPerformance, aPlay) {
     this.performance = aPerformance;
@@ -50,7 +67,7 @@ function createStatementData(invoice, plays) {
   return statementData;
 
   function enrichPerformance(aPerformance) {
-    const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance)); // 공연료 계산기 생성
+    const calculator = createPerformanceCalculator(aPerformance, playFor(aPerformance)); // 생성자 대신 팩토리 함수 이용
     // 얕은 복사를 수행한 이유는 함수로 건넨 데이터를 수정하지 않기 위해서임(immutable)
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
     result.play = calculator.play; // 중간 데이터에 연극 정보를 저장한다
