@@ -27,6 +27,17 @@ class PerformanceCalculator {
 
     return result;
   }
+
+  get volumeCredits() {
+    let result = 0;
+    result += Math.max(this.performance.audience - 30, 0);
+
+    if ('comedy' === this.play.type) {
+      result += Math.floor(this.performance.audience / 5);
+    }
+
+    return result;
+  }
 }
 
 function createStatementData(invoice, plays) {
@@ -44,7 +55,7 @@ function createStatementData(invoice, plays) {
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
     result.play = calculator.play; // 중간 데이터에 연극 정보를 저장한다
     result.amount = calculator.amount;
-    result.volumeCredits = volumeCreditsFor(result);
+    result.volumeCredits = calculator.volumeCredits;
 
     return result;
   }
