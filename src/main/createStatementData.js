@@ -3,6 +3,30 @@ class PerformanceCalculator {
     this.performance = aPerformance;
     this.play = aPlay;
   }
+
+  get amount() {
+    let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
+
+    switch (this.performance.play.type) { // play를 playFor() 호출로 변경
+      case "tragedy": //비극
+        result = 40000;
+        if (this.performance.audience > 30) {
+          result += 1000 * (this.performance.audience - 30);
+        }
+        break;
+      case "comedy": //희극
+        result = 30000;
+        if (this.performance.audience > 20) {
+          result += 10000 + 500 * (this.performance.audience - 20);
+        }
+        result += 300 * this.performance.audience;
+        break;
+      default:
+        throw new Error(`알 수 없는 장르: ${this.play.type}`); // play를 playFor() 호출로 변경
+    }
+
+    return result;
+  }
 }
 
 function createStatementData(invoice, plays) {
