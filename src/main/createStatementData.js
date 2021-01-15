@@ -30,15 +30,15 @@ class PerformanceCalculator {
     throw new Error('서브 클래스에서 처리하도록 설계 됨');
   }
 
+  /**
+   *
+   * @returns {number}
+   *
+   * 연극 장르들을 검토한 결과, 일부 장르에서만 계산 방식이 약간 다를 뿐 대다수의 연극은 관객 수가 30명이 넘는지를 기본으로 검사해야한다
+   * 이럴 때는 일반적인 경우를 슈퍼 클래스에 남겨두고 장르마다 달라지는 부분을 오버라이드 해서 계산하게 한다
+   */
   get volumeCredits() {
-    let result = 0;
-    result += Math.max(this.performance.audience - 30, 0);
-
-    if ('comedy' === this.play.type) {
-      result += Math.floor(this.performance.audience / 5);
-    }
-
-    return result;
+    return  Math.max(this.performance.audience - 30, 0);
   }
 }
 
@@ -62,6 +62,10 @@ class ComedyCalculator extends PerformanceCalculator {
     result += 300 * this.performance.audience;
 
     return result;
+  }
+
+  get volumeCredits() {
+    return super.volumeCredits + Math.floor(this.performance.audience / 5);
   }
 }
 
