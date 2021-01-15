@@ -7,7 +7,7 @@ class PerformanceCalculator {
   get amount() {
     let result = 0; // 변수 초기화 코드, 함수 안에서 값이 변경 됨 => thisAmount 에서 명확한 변수명으로 변경
 
-    switch (this.performance.play.type) { // play를 playFor() 호출로 변경
+    switch (this.play.type) { // play를 playFor() 호출로 변경
       case "tragedy": //비극
         result = 40000;
         if (this.performance.audience > 30) {
@@ -43,7 +43,7 @@ function createStatementData(invoice, plays) {
     // 얕은 복사를 수행한 이유는 함수로 건넨 데이터를 수정하지 않기 위해서임(immutable)
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
     result.play = calculator.play; // 중간 데이터에 연극 정보를 저장한다
-    result.amount = amountFor(result);
+    result.amount = calculator.amount;
     result.volumeCredits = volumeCreditsFor(result);
 
     return result;
