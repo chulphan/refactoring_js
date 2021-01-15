@@ -1,3 +1,10 @@
+class PerformanceCalculator {
+  constructor(aPerformance, aPlay) {
+    this.performance = aPerformance;
+    this.play = aPlay;
+  }
+}
+
 function createStatementData(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer; // 고객 데이터를 중간 데이터로 옮겼다
@@ -8,9 +15,10 @@ function createStatementData(invoice, plays) {
   return statementData;
 
   function enrichPerformance(aPerformance) {
+    const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance)); // 공연료 계산기 생성
     // 얕은 복사를 수행한 이유는 함수로 건넨 데이터를 수정하지 않기 위해서임(immutable)
     const result = Object.assign({}, aPerformance); // 얕은 복사 수행
-    result.play = playFor(result); // 중간 데이터에 연극 정보를 저장한다
+    result.play = calculator.play; // 중간 데이터에 연극 정보를 저장한다
     result.amount = amountFor(result);
     result.volumeCredits = volumeCreditsFor(result);
 
